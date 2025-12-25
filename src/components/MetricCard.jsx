@@ -1,10 +1,11 @@
-export default function MetricCard({ title, value }) {
+export default function MetricCard({ title, value, subtitle }) {
   return (
-    <div className="p-6 bg-surface rounded-xl shadow-card">
-      <p className="text-sm text-muted">{title}</p>
-      <h3 className="mt-2 text-2xl font-bold text-gray-800">
-        {value}
-      </h3>
+    <div className="p-6 bg-white shadow rounded-xl">
+      <p className="text-sm text-gray-500">{title}</p>
+      <h3 className="mt-2 text-3xl font-bold">{value}</h3>
+      {subtitle && (
+        <p className="mt-1 text-sm text-gray-400">{subtitle}</p>
+      )}
     </div>
   );
 }

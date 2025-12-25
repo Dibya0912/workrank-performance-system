@@ -7,7 +7,13 @@ export default function Login() {
 
   const handleLogin = (role) => {
     login(role);
-    navigate("/dashboard");
+
+    // 🔥 ROLE BASED ROUTING (MANDATORY)
+    if (role === "admin") {
+      navigate("/admin");
+    } else {
+      navigate("/user");
+    }
   };
 
   return (
@@ -17,7 +23,6 @@ export default function Login() {
           WorkRank Login
         </h1>
 
-        {/* USER LOGIN */}
         <button
           onClick={() => handleLogin("user")}
           className="w-full py-2 mt-6 text-white transition rounded-lg bg-primary hover:bg-blue-700"
@@ -25,7 +30,6 @@ export default function Login() {
           Login as User
         </button>
 
-        {/* ADMIN LOGIN */}
         <button
           onClick={() => handleLogin("admin")}
           className="w-full py-2 mt-3 text-white transition bg-gray-900 rounded-lg hover:bg-black"
