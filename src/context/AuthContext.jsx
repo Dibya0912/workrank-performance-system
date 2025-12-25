@@ -1,15 +1,25 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem("workrank-user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   const login = (role) => {
-    setUser({ role });
+    const userData = { role };
+    localStorage.setItem("workrank-user", JSON.stringify(userData));
+    setUser(userData);
   };
 
   const logout = () => {
+    localStorage.removeItem("workrank-user");
     setUser(null);
   };
 
@@ -20,6 +30,4 @@ export function AuthProvider({ children }) {
   );
 }
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export const useAuth = () => useContext(AuthContext);

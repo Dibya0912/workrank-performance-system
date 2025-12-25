@@ -1,7 +1,17 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import UserDashboard from "./pages/UserDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+import { useAuth } from "./context/AuthContext";
+
+function DashboardRouter() {
+  const { user } = useAuth();
+
+  return user.role === "admin"
+    ? <AdminDashboard />
+    : <UserDashboard />;
+}
 
 export default function App() {
   return (
@@ -13,7 +23,7 @@ export default function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <DashboardRouter />
             </ProtectedRoute>
           }
         />
