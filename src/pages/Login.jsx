@@ -8,7 +8,6 @@ export default function Login() {
   const handleLogin = (role) => {
     login(role);
 
-    // 🔥 ROLE BASED ROUTING (MANDATORY)
     if (role === "admin") {
       navigate("/admin");
     } else {

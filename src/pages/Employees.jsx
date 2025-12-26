@@ -1,21 +1,16 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
-import EmployeeCard from "../components/EmployeeCard";
 import { api } from "../services/api";
 
 export default function Employees() {
-  const [employees, setEmployees] = useState(null);
+  const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
     api.getEmployees().then(setEmployees);
   }, []);
 
-  if (!employees) {
-    return <p className="p-6">Loading employees...</p>;
-  }
-
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
 
       <main className="flex-1 p-8">
@@ -23,10 +18,35 @@ export default function Employees() {
           Employees
         </h1>
 
-        <div className="grid gap-6 md:grid-cols-3">
-          {employees.map((emp) => (
-            <EmployeeCard key={emp.id} employee={emp} />
-          ))}
+        <div className="overflow-x-auto bg-white rounded shadow">
+          <table className="w-full text-left border-collapse">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="p-3">Name</th>
+                <th className="p-3">Role</th>
+                <th className="p-3">Department</th>
+                <th className="p-3">Tasks</th>
+                <th className="p-3">Performance</th>
+                <th className="p-3">Rank</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {employees.map((emp) => (
+                <tr
+                  key={emp.id}
+                  className="border-t hover:bg-gray-50"
+                >
+                  <td className="p-3 font-medium">{emp.name}</td>
+                  <td className="p-3">{emp.role}</td>
+                  <td className="p-3">{emp.department}</td>
+                  <td className="p-3">{emp.tasksCompleted}</td>
+                  <td className="p-3">{emp.performance}%</td>
+                  <td className="p-3">#{emp.rank}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </main>
     </div>
