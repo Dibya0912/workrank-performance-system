@@ -1,191 +1,130 @@
-🏆 WorkRank Performance System 🚀
+# 🏆 WorkRank Performance System
 
-A role-based performance evaluation and ranking system built using React + Vite + Tailwind CSS, designed to track user performance, rankings, and provide powerful admin-level insights through structured dashboards.
+A role-based performance tracking and ranking dashboard built using **React + Vite + Tailwind CSS**.  
+The system provides **users** with performance insights and **admins** with team-level analytics.
 
-This project follows an industry-style architecture, emphasizing clean routing, role-based access control, and scalable component design.
+Designed with **industry-grade architecture**, clean routing, and scalable structure.
 
-🎯 Project Objective
+---
 
-Provide Users with insights into their performance, rank, and progress
+## 🚀 Key Features
 
-Provide Admins with system-wide visibility and employee management tools
+### 👤 User Module
+- Login as User
+- Personal Dashboard
+- Performance Metrics (Tasks, Score, Rank)
+- Weekly Performance Chart
+- Team Snapshot View
+- Dedicated pages:
+  - My Performance
+  - My Rank
 
-Implement secure, role-based routing with clean UI separation
+### 🛠 Admin Module
+- Login as Admin
+- Admin Dashboard
+- System-wide Metrics
+- Employee Overview
+- Weekly Performance Analytics
+- Employee Management Page
 
-Build a scalable foundation that can be extended to backend integration (Firebase / Node.js)
+### 🔐 Authentication & Security
+- Role-based authentication (User / Admin)
+- Protected routes using `ProtectedRoute`
+- Unauthorized access blocked
+- Logout clears session and redirects safely
+- Auth state managed using Context API
 
-🚀 Tech Stack
+---
 
-Frontend: React (Vite)
+## 🧱 Tech Stack
 
-Styling: Tailwind CSS
+| Layer | Technology |
+|-----|-----------|
+| Frontend | React (Vite) |
+| Styling | Tailwind CSS |
+| Routing | React Router DOM |
+| State | Context API |
+| Auth | Role-based (Context + LocalStorage) |
+| Charts | Custom reusable components |
+| Version Control | Git & GitHub |
 
-Routing: React Router DOM
+---
 
-State Management: Context API
+## 📁 Folder Structure
 
-Authentication: Role-based Auth (Context + LocalStorage)
-
-Charts & Visualization: Custom reusable chart components
-
-Version Control: Git & GitHub
-
-📁 Project Structure
 src/
 ├── assets/
 ├── components/
-│   ├── Charts.jsx
-│   ├── MetricCard.jsx
-│   ├── Sidebar.jsx
-│   ├── EmployeeCard.jsx
-│   └── ProtectedRoute.jsx
-│
+│ ├── Charts.jsx
+│ ├── MetricCard.jsx
+│ ├── EmployeeCard.jsx
+│ ├── Sidebar.jsx
+│ └── ProtectedRoute.jsx
 ├── context/
-│   └── AuthContext.jsx
-│
+│ └── AuthContext.jsx
 ├── pages/
-│   ├── Login.jsx
-│   ├── UserDashboard.jsx
-│   ├── AdminDashboard.jsx
-│   ├── Employees.jsx
-│   ├── MyPerformance.jsx
-│   └── MyRank.jsx
-│
+│ ├── Login.jsx
+│ ├── UserDashboard.jsx
+│ ├── AdminDashboard.jsx
+│ ├── Employees.jsx
+│ ├── MyPerformance.jsx
+│ └── MyRank.jsx
 ├── services/
-│   └── api.js
-│
+│ └── api.js
 ├── App.jsx
 ├── main.jsx
 └── index.css
 
-🔐 Authentication & Authorization Flow
 
-User/Admin logs in via Login page
 
-Role (user / admin) stored in Context API
+---
 
-Protected routes implemented using ProtectedRoute
+## 🔁 Authentication Flow
 
-Unauthorized access is blocked automatically
+1. User/Admin logs in from Login page
+2. Role stored in Context
+3. Role-based redirection:
+   - User → `/user`
+   - Admin → `/admin`
+4. Routes protected using `ProtectedRoute`
+5. Sidebar adapts based on role
+6. Logout clears auth state and redirects to Login
 
-Logout clears session and redirects to Login
+---
 
-Architecture ready for backend token-based auth
+## 📊 Current Progress (Day-wise)
 
-📊 Key Features
-👤 User Features
+### ✅ Day 1–3: Foundation
+- Project setup using Vite
+- Routing with React Router
+- Login page
+- Context-based auth
+- Protected routes
 
-Personal dashboard with KPI metrics
+### ✅ Day 4–5: Dashboard Architecture
+- User & Admin dashboards separated
+- Sidebar component
+- Metric cards
+- Charts component
+- Logout & session handling
 
-Performance analytics view
+### ✅ Day 6–7: Role-Based Navigation
+- Sidebar links differ for User/Admin
+- Route-level role enforcement
+- UI cleanup & refactor
 
-Rank overview
+### ✅ Day 8–9: Feature Expansion
+- EmployeeCard component
+- Employees page (Admin)
+- My Performance page (User)
+- My Rank page (User)
+- Mock API service layer (`api.js`)
+- Fully working role-based dashboards
 
-Clean, role-specific navigation
+---
 
-🛠 Admin Features
+## ▶️ Run Locally
 
-Admin-only dashboard
-
-Employee Management Page (table view)
-
-System-wide performance metrics
-
-Secure admin-only routes
-
-Scalable foundation for reports & analytics
-
-📅 Development Progress (Day-wise)
-✅ Day 1 – Project Setup
-
-Initialized project using Vite + React
-
-Folder structure planning
-
-GitHub repository setup
-
-Initial commit workflow
-
-✅ Day 2 – Routing & Login Page
-
-Integrated React Router DOM
-
-Built Login page
-
-Implemented navigation flow
-
-Base routing structure
-
-✅ Day 3 – Authentication & Role Handling
-
-Implemented Context API (AuthContext)
-
-Role-based login (User / Admin)
-
-Protected routes using ProtectedRoute
-
-Fixed auth and routing edge cases
-
-✅ Day 4 – Dashboard Architecture
-
-Split dashboards:
-
-UserDashboard
-
-AdminDashboard
-
-Built reusable components:
-
-Sidebar
-
-Metric cards
-
-Charts
-
-Role-based UI rendering
-
-✅ Day 5 – UX & Auth Improvements
-
-Persistent login logic
-
-Logout functionality
-
-Improved route protection
-
-Refactored auth & layout code
-
-✅ Day 6–7 – Data Layer & UI Stability
-
-Introduced centralized mock API (api.js)
-
-Removed hardcoded UI data
-
-Stabilized chart rendering
-
-Improved loading states
-
-✅ Day 8 – Role-Based System Finalization
-
-Fixed auth-provider wiring issues
-
-Proper User/Admin route separation
-
-Removed route mismatches
-
-Ensured stable, crash-free navigation
-
-✅ Day 9 – Admin Employee Management 🚀
-
-Implemented Admin-only Employees page
-
-Professional table-based employee view
-
-Role-based sidebar navigation
-
-Secure admin routes
-
-Clean, scalable architecture ready for expansion
-
-▶️ Run Locally
+```bash
 npm install
 npm run dev
