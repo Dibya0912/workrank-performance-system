@@ -22,6 +22,9 @@ export default function Sidebar() {
             <Link className="block hover:text-blue-400" to="/user">
               Dashboard
             </Link>
+            <Link className="block hover:text-blue-400" to="/user/tasks">
+              My Tasks
+            </Link>
             <Link className="block hover:text-blue-400" to="/user/performance">
               My Performance
             </Link>
@@ -35,6 +38,9 @@ export default function Sidebar() {
           <>
             <Link className="block hover:text-blue-400" to="/admin">
               Dashboard
+            </Link>
+            <Link className="block hover:text-blue-400" to="/admin/tasks">
+              Manage Tasks
             </Link>
             <Link className="block hover:text-blue-400" to="/admin/employees">
               Employees

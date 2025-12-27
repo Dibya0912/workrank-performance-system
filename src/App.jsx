@@ -5,6 +5,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Employees from "./pages/Employees";
 import MyPerformance from "./pages/MyPerformance";
 import MyRank from "./pages/MyRank";
+import UserTasks from "./pages/UserTasks";
+import AdminTasks from "./pages/AdminTasks";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -12,12 +14,20 @@ function App() {
     <Routes>
       <Route path="/" element={<Login />} />
 
-      {/* USER */}
+      {/* USER ROUTES */}
       <Route
         path="/user"
         element={
           <ProtectedRoute role="user">
             <UserDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/user/tasks"
+        element={
+          <ProtectedRoute role="user">
+            <UserTasks />
           </ProtectedRoute>
         }
       />
@@ -38,12 +48,20 @@ function App() {
         }
       />
 
-      {/* ADMIN */}
+      {/* ADMIN ROUTES */}
       <Route
         path="/admin"
         element={
           <ProtectedRoute role="admin">
             <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/tasks"
+        element={
+          <ProtectedRoute role="admin">
+            <AdminTasks />
           </ProtectedRoute>
         }
       />
