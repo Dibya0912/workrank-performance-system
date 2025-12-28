@@ -1,40 +1,15 @@
 // src/services/api.js
-
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 /* ================= EMPLOYEES ================= */
 const employees = [
-  {
-    id: 1,
-    name: "Rahul Sharma",
-    role: "Developer",
-    department: "Engineering",
-    performance: 82,
-    tasksCompleted: 18,
-    rank: 4,
-  },
-  {
-    id: 2,
-    name: "Anjali Verma",
-    role: "Designer",
-    department: "UI/UX",
-    performance: 90,
-    tasksCompleted: 24,
-    rank: 1,
-  },
-  {
-    id: 3,
-    name: "Amit Singh",
-    role: "Manager",
-    department: "Operations",
-    performance: 75,
-    tasksCompleted: 12,
-    rank: 6,
-  },
+  { id: 1, name: "Rahul Sharma", role: "Developer" },
+  { id: 2, name: "Anjali Verma", role: "Designer" },
+  { id: 3, name: "Amit Singh", role: "Manager" },
 ];
 
-/* ================= TASKS ================= */
-const tasks = [
+/* ================= TASKS (IN-MEMORY DB) ================= */
+let tasks = [
   {
     id: 1,
     title: "Fix Login Bug",
@@ -49,50 +24,32 @@ const tasks = [
     title: "Improve Dashboard UI",
     description: "Refactor admin dashboard layout",
     assignedTo: "admin",
-    status: "completed",
+    status: "in-progress",
     priority: "medium",
     dueDate: "2025-01-18",
   },
-  {
-    id: 3,
-    title: "Performance Calculation",
-    description: "Prepare logic for performance scoring",
-    assignedTo: "user",
-    status: "pending",
-    priority: "high",
-    dueDate: "2025-01-22",
-  },
 ];
 
+/* ================= API ================= */
 export const api = {
-  /* ===== USER ===== */
+  /* ===== DASHBOARD ===== */
   async getUserMetrics() {
-    await delay(500);
-    return {
-      tasksCompleted: 18,
-      performance: 82,
-      rank: 4,
-    };
+    await delay(300);
+    return { tasksCompleted: 18, performance: 82, rank: 4 };
   },
 
-  /* ===== ADMIN ===== */
   async getAdminMetrics() {
-    await delay(500);
-    return {
-      totalEmployees: employees.length,
-      activeUsers: 19,
-      avgPerformance: 76,
-    };
+    await delay(300);
+    return { totalEmployees: employees.length, activeUsers: 19, avgPerformance: 76 };
   },
 
   async getEmployees() {
-    await delay(500);
+    await delay(300);
     return employees;
   },
 
-  /* ===== CHART ===== */
   async getChartData() {
-    await delay(500);
+    await delay(300);
     return [
       { day: "Mon", score: 40 },
       { day: "Tue", score: 60 },
@@ -102,9 +59,34 @@ export const api = {
     ];
   },
 
-  /* ===== TASKS (DAY 10 CORE) ===== */
+  /* ===== TASKS CRUD ===== */
   async getTasks() {
-    await delay(500);
-    return tasks;
+    await delay(300);
+    return [...tasks];
+  },
+
+  async createTask(task) {
+    await delay(300);
+    const newTask = {
+      ...task,
+      id: Date.now(),
+      status: "pending",
+    };
+    tasks.push(newTask);
+    return newTask;
+  },
+
+  async updateTaskStatus(id, status) {
+    await delay(300);
+    tasks = tasks.map((t) =>
+      t.id === id ? { ...t, status } : t
+    );
+    return true;
+  },
+
+  async deleteTask(id) {
+    await delay(300);
+    tasks = tasks.filter((t) => t.id !== id);
+    return true;
   },
 };
