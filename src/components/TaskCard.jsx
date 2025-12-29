@@ -1,14 +1,18 @@
+import StatusBadge from "./StatusBadge";
+
 export default function TaskCard({ task, onStatusChange, onDelete, admin }) {
   return (
     <div className="p-4 bg-white rounded-lg shadow">
-      <h3 className="text-lg font-semibold">{task.title}</h3>
-      <p className="text-sm text-gray-600">{task.description}</p>
-
-      <div className="mt-2 text-sm">
-        <p>Status: <b>{task.status}</b></p>
-        <p>Priority: <b>{task.priority}</b></p>
-        <p>Due: {task.dueDate}</p>
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold">{task.title}</h3>
+        <StatusBadge status={task.status} />
       </div>
+
+      <p className="mt-1 text-sm text-gray-600">{task.description}</p>
+
+      <p className="mt-2 text-xs text-gray-500">
+        Priority: {task.priority} | Due: {task.dueDate}
+      </p>
 
       <div className="flex gap-2 mt-4">
         {!admin && task.status !== "done" && (
