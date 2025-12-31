@@ -6,12 +6,12 @@ import EmployeeCard from "../components/EmployeeCard";
 import { api } from "../services/api";
 
 export default function AdminDashboard() {
-  const [metrics, setMetrics] = useState(null);
   const [employees, setEmployees] = useState([]);
+  const [metrics, setMetrics] = useState(null);
 
   useEffect(() => {
-    api.getAdminMetrics().then(setMetrics);
     api.getEmployees().then(setEmployees);
+    api.getAdminMetrics().then(setMetrics);
   }, []);
 
   if (!metrics) return <div className="p-8">Loading...</div>;
@@ -24,9 +24,9 @@ export default function AdminDashboard() {
         <h1 className="mb-6 text-3xl font-bold">Admin Dashboard</h1>
 
         <div className="grid gap-6 md:grid-cols-3">
-          <MetricCard title="Total Employees" value={metrics.totalEmployees} />
-          <MetricCard title="Active Users" value={metrics.activeUsers} />
-          <MetricCard title="Avg Performance" value={`${metrics.avgPerformance}%`} />
+          <MetricCard title="Employees" value={metrics.totalEmployees} />
+          <MetricCard title="Total Tasks" value={metrics.totalTasks} />
+          <MetricCard title="Completed Tasks" value={metrics.completedTasks} />
         </div>
 
         <div className="mt-10">
