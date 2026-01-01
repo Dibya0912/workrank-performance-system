@@ -1,4 +1,3 @@
-// src/services/api.js
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 /* ================= USERS ================= */
@@ -14,7 +13,7 @@ let tasks = [
     id: 1,
     title: "Fix Login Bug",
     description: "Resolve role-based redirect issue",
-    assignedTo: "user",
+    assignedTo: 1, // USER ID
     status: "done",
     priority: "high",
     dueDate: "2025-01-20",
@@ -23,31 +22,33 @@ let tasks = [
     id: 2,
     title: "Improve Dashboard UI",
     description: "Refactor dashboard layout",
-    assignedTo: "user",
+    assignedTo: 1,
     status: "pending",
     priority: "medium",
     dueDate: "2025-01-22",
   },
+  {
+    id: 3,
+    title: "Create Wireframes",
+    description: "Initial UI planning",
+    assignedTo: 2,
+    status: "done",
+    priority: "medium",
+    dueDate: "2025-01-18",
+  },
 ];
 
 /* ================= HELPERS ================= */
-const completedCount = () =>
-  tasks.filter((t) => t.assignedTo === "user" && t.status === "done").length;
+const getUserTasks = (userId) =>
+  tasks.filter((t) => t.assignedTo === userId);
 
-const calcScore = () => completedCount() * 10;
+const completedCount = (userId) =>
+  getUserTasks(userId).filter((t) => t.status === "done").length;
+
+const calcScore = (userId) => completedCount(userId) * 10;
 
 /* ================= API ================= */
 export const api = {
-  /* ===== EMPLOYEES ===== */
-  async getEmployees() {
-    await delay(200);
-    return users.map((u) => ({
-      ...u,
-      tasksCompleted: completedCount(),
-      performance: calcScore(),
-    }));
-  },
-
   /* ===== TASKS ===== */
   async getTasks() {
     await delay(200);
@@ -77,6 +78,27 @@ export const api = {
     tasks = tasks.filter((t) => t.id !== id);
   },
 
+  /* ===== USER DASHBOARD ===== */
+  async getUserPerformance(userId) {
+    await delay(200);
+    const completedTasks = completedCount(userId);
+
+    return {
+      completedTasks,
+      score: completedTasks * 10,
+    };
+  },
+
+  /* ===== EMPLOYEES ===== */
+  async getEmployees() {
+    await delay(200);
+    return users.map((u) => ({
+      ...u,
+      tasksCompleted: completedCount(u.id),
+      performance: calcScore(u.id),
+    }));
+  },
+
   /* ===== ADMIN DASHBOARD ===== */
   async getAdminMetrics() {
     await delay(200);
@@ -87,26 +109,20 @@ export const api = {
     };
   },
 
-  /* ===== USER DASHBOARD ===== */
-  async getUserPerformance() {
-    await delay(200);
-    const completedTasks = completedCount();
-
-    return {
-      completedTasks,
-      score: completedTasks * 10,
-    };
-  },
-
-  /* ===== LEADERBOARD (🔥 FIX FOR MY RANK) ===== */
+  /* ===== LEADERBOARD (REAL) ===== */
   async getLeaderboard() {
     await delay(200);
 
-    return users.map((u, index) => ({
-      id: u.id,
-      name: u.name,
-      score: calcScore(),
-      rank: index + 1,
-    }));
+    return users
+      .map((u) => ({
+        id: u.id,
+        name: u.name,
+        score: calcScore(u.id),
+      }))
+      .sort((a, b) => b.score - a.score)
+      .map((u, index) => ({
+        ...u,
+        rank: index + 1,
+      }));
   },
 };

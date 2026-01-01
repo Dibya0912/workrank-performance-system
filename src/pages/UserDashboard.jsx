@@ -3,13 +3,17 @@ import Sidebar from "../components/Sidebar";
 import MetricCard from "../components/MetricCard";
 import Charts from "../components/Charts";
 import { api } from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
 export default function UserDashboard() {
+  const { user } = useAuth();
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    api.getUserPerformance().then(setData);
-  }, []);
+    if (user) {
+      api.getUserPerformance(user.id).then(setData);
+    }
+  }, [user]);
 
   if (!data) return <div className="p-8">Loading...</div>;
 
@@ -22,7 +26,7 @@ export default function UserDashboard() {
         <div className="grid gap-6 md:grid-cols-3">
           <MetricCard title="Tasks Completed" value={data.completedTasks} />
           <MetricCard title="Performance Score" value={`${data.score}%`} />
-          <MetricCard title="Rank" value="Calculated Live" />
+          <MetricCard title="Rank" value="Live" />
         </div>
 
         <div className="mt-10">
