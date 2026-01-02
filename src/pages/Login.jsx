@@ -1,9 +1,16 @@
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function Login() {
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const navigate = useNavigate();
+
+  // 🔁 AUTO REDIRECT IF ALREADY LOGGED IN
+  useEffect(() => {
+    if (user?.role === "user") navigate("/user");
+    if (user?.role === "admin") navigate("/admin");
+  }, [user, navigate]);
 
   const loginAsUser = () => {
     login({
