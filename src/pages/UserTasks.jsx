@@ -3,19 +3,21 @@ import Sidebar from "../components/Sidebar";
 import TaskCard from "../components/TaskCard";
 import TaskFilter from "../components/TaskFilter";
 import { api } from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
 export default function UserTasks() {
+  const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState("all");
 
   const load = async () => {
     const all = await api.getTasks();
-    setTasks(all.filter((t) => t.assignedTo === "user"));
+    setTasks(all.filter((t) => t.assignedTo === user.id));
   };
 
   useEffect(() => {
-    load();
-  }, []);
+    if (user) load();
+  }, [user]);
 
   const markDone = async (id) => {
     await api.updateTaskStatus(id, "done");
@@ -32,7 +34,6 @@ export default function UserTasks() {
       <Sidebar />
       <main className="flex-1 p-8">
         <h1 className="mb-4 text-3xl font-bold">My Tasks</h1>
-
         <TaskFilter value={filter} onChange={setFilter} />
 
         <div className="grid gap-4">

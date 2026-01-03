@@ -13,7 +13,7 @@ let tasks = [
     id: 1,
     title: "Fix Login Bug",
     description: "Resolve role-based redirect issue",
-    assignedTo: 1, // USER ID
+    assignedTo: 1,
     status: "done",
     priority: "high",
     dueDate: "2025-01-20",
@@ -39,17 +39,16 @@ let tasks = [
 ];
 
 /* ================= HELPERS ================= */
-const getUserTasks = (userId) =>
+const userTasks = (userId) =>
   tasks.filter((t) => t.assignedTo === userId);
 
 const completedCount = (userId) =>
-  getUserTasks(userId).filter((t) => t.status === "done").length;
+  userTasks(userId).filter((t) => t.status === "done").length;
 
 const calcScore = (userId) => completedCount(userId) * 10;
 
 /* ================= API ================= */
 export const api = {
-  /* ===== TASKS ===== */
   async getTasks() {
     await delay(200);
     return [...tasks];
@@ -78,18 +77,15 @@ export const api = {
     tasks = tasks.filter((t) => t.id !== id);
   },
 
-  /* ===== USER DASHBOARD ===== */
   async getUserPerformance(userId) {
     await delay(200);
     const completedTasks = completedCount(userId);
-
     return {
       completedTasks,
       score: completedTasks * 10,
     };
   },
 
-  /* ===== EMPLOYEES ===== */
   async getEmployees() {
     await delay(200);
     return users.map((u) => ({
@@ -99,7 +95,6 @@ export const api = {
     }));
   },
 
-  /* ===== ADMIN DASHBOARD ===== */
   async getAdminMetrics() {
     await delay(200);
     return {
@@ -109,10 +104,8 @@ export const api = {
     };
   },
 
-  /* ===== LEADERBOARD (REAL) ===== */
   async getLeaderboard() {
     await delay(200);
-
     return users
       .map((u) => ({
         id: u.id,

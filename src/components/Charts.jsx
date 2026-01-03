@@ -1,26 +1,38 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
 export default function Charts() {
+  const { user } = useAuth();
   const [points, setPoints] = useState([]);
 
   useEffect(() => {
+    if (!user) return;
+
     api.getTasks().then((tasks) => {
-      const done = tasks.filter(
-        (t) => t.assignedTo === "user" && t.status === "done"
+      const userTasks = tasks.filter(
+        (t) => t.assignedTo === user.id
+      );
+
+      const done = userTasks.filter(
+        (t) => t.status === "done"
       ).length;
 
-      // simple performance trend
       setPoints([
         { label: "Completed Tasks", value: done * 10 },
-        { label: "Pending Tasks", value: (tasks.length - done) * 5 },
+        {
+          label: "Pending Tasks",
+          value: (userTasks.length - done) * 5,
+        },
       ]);
     });
-  }, []);
+  }, [user]);
 
   return (
     <div className="p-6 bg-white rounded shadow">
-      <h2 className="mb-4 text-lg font-semibold">Performance Overview</h2>
+      <h2 className="mb-4 text-lg font-semibold">
+        Performance Overview
+      </h2>
 
       <div className="space-y-3">
         {points.map((p) => (
