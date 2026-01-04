@@ -49,6 +49,12 @@ const calcScore = (userId) => completedCount(userId) * 10;
 
 /* ================= API ================= */
 export const api = {
+  /* 🔥 NEW – USERS LIST FOR ADMIN */
+  async getUsers() {
+    await delay(200);
+    return [...users];
+  },
+
   async getTasks() {
     await delay(200);
     return [...tasks];

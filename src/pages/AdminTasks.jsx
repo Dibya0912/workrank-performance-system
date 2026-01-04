@@ -6,48 +6,46 @@ import { api } from "../services/api";
 
 export default function AdminTasks() {
   const [tasks, setTasks] = useState([]);
+  const [users, setUsers] = useState([]);
   const [title, setTitle] = useState("");
+  const [assignedTo, setAssignedTo] = useState("");
   const [filter, setFilter] = useState("all");
 
-  // LOAD ALL TASKS
   const load = async () => {
-    const all = await api.getTasks();
-    setTasks(all);
+    setTasks(await api.getTasks());
+    setUsers(await api.getUsers());
   };
 
   useEffect(() => {
     load();
   }, []);
 
-  // CREATE TASK (ASSIGNED TO USER ID = 1)
   const create = async () => {
-    if (!title.trim()) return;
+    if (!title || !assignedTo) return;
 
     await api.createTask({
       title,
       description: "Created by admin",
-      assignedTo: 1, // ✅ USER ID (DAY 16 LOGIC)
+      assignedTo: Number(assignedTo),
       priority: "medium",
       dueDate: "2025-01-25",
     });
 
     setTitle("");
+    setAssignedTo("");
     load();
   };
 
-  // UPDATE STATUS
   const update = async (id, status) => {
     await api.updateTaskStatus(id, status);
     load();
   };
 
-  // DELETE TASK
   const remove = async (id) => {
     await api.deleteTask(id);
     load();
   };
 
-  // FILTER TASKS
   const filtered =
     filter === "all"
       ? tasks
@@ -60,26 +58,38 @@ export default function AdminTasks() {
       <main className="flex-1 p-8">
         <h1 className="mb-4 text-3xl font-bold">Manage Tasks</h1>
 
-        {/* CREATE TASK */}
+        {/* CREATE */}
         <div className="flex gap-2 mb-4">
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="w-64 p-2 border rounded"
-            placeholder="New task title"
+            placeholder="Task title"
           />
+
+          <select
+            value={assignedTo}
+            onChange={(e) => setAssignedTo(e.target.value)}
+            className="p-2 border rounded"
+          >
+            <option value="">Assign to</option>
+            {users.map((u) => (
+              <option key={u.id} value={u.id}>
+                {u.name}
+              </option>
+            ))}
+          </select>
+
           <button
             onClick={create}
-            className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+            className="px-4 py-2 text-white bg-blue-600 rounded"
           >
-            Add Task
+            Add
           </button>
         </div>
 
-        {/* FILTER */}
         <TaskFilter value={filter} onChange={setFilter} />
 
-        {/* TASK LIST */}
         <div className="grid gap-4">
           {filtered.map((task) => (
             <TaskCard
