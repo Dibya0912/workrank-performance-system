@@ -283,6 +283,10 @@ Logic → API & Context
 
 Codebase now backend-ready
 
+
+
+
+
 ▶️ Run Locally
 npm install
 npm run dev
