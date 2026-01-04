@@ -284,6 +284,46 @@ Logic → API & Context
 Codebase now backend-ready
 
 
+## ✅ Day 17 — Real User-Based Task Flow & Session Persistence
+
+### 🔥 What was implemented today
+
+Day 17 focused on converting the system from **role-only logic** to a
+**real user-id–based architecture**, making the project closer to a
+production-ready system.
+
+---
+
+### 👤 User Identity Upgrade
+- Tasks are now assigned using **user IDs** instead of role strings
+- Every user sees **only their own tasks**
+- Performance, score, and rank are calculated per user
+
+---
+
+### 🧠 Task Engine Improvements
+- Centralized task filtering using `assignedTo: userId`
+- Accurate task completion counts per user
+- Score calculation based on completed tasks
+- Admin can assign tasks to a specific user ID
+
+---
+
+### 🏆 Leaderboard (Real Logic)
+- Leaderboard is dynamically generated
+- Sorted by score (descending)
+- Rank assigned after sorting
+- Logged-in user highlighted in leaderboard
+
+---
+
+### 🔐 Authentication Persistence
+- Login state stored in `localStorage`
+- Session restored automatically on page reload
+- Auto-redirect based on saved role (User/Admin)
+- Secure logout clears session properly
+
+
 
 
 
