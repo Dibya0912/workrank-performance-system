@@ -1,3 +1,4 @@
+// src/services/api.js
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 /* ================= USERS ================= */
@@ -18,25 +19,10 @@ let tasks = [
     priority: "high",
     dueDate: "2025-01-20",
   },
-  {
-    id: 2,
-    title: "Improve Dashboard UI",
-    description: "Refactor dashboard layout",
-    assignedTo: 1,
-    status: "pending",
-    priority: "medium",
-    dueDate: "2025-01-22",
-  },
-  {
-    id: 3,
-    title: "Create Wireframes",
-    description: "Initial UI planning",
-    assignedTo: 2,
-    status: "done",
-    priority: "medium",
-    dueDate: "2025-01-18",
-  },
 ];
+
+/* ================= ACTIVITY LOGS (🔥 DAY 19) ================= */
+let activities = [];
 
 /* ================= HELPERS ================= */
 const userTasks = (userId) =>
@@ -47,9 +33,16 @@ const completedCount = (userId) =>
 
 const calcScore = (userId) => completedCount(userId) * 10;
 
+const logActivity = (message) => {
+  activities.unshift({
+    id: Date.now(),
+    message,
+    time: new Date().toLocaleString(),
+  });
+};
+
 /* ================= API ================= */
 export const api = {
-  /* 🔥 NEW – USERS LIST FOR ADMIN */
   async getUsers() {
     await delay(200);
     return [...users];
@@ -68,27 +61,33 @@ export const api = {
       status: "pending",
     };
     tasks.push(newTask);
+    logActivity(`Admin created task "${task.title}"`);
     return newTask;
   },
 
   async updateTaskStatus(id, status) {
     await delay(200);
-    tasks = tasks.map((t) =>
-      t.id === id ? { ...t, status } : t
-    );
+    const task = tasks.find((t) => t.id === id);
+    if (task) {
+      task.status = status;
+      logActivity(`Task "${task.title}" marked as ${status}`);
+    }
   },
 
   async deleteTask(id) {
     await delay(200);
+    const task = tasks.find((t) => t.id === id);
     tasks = tasks.filter((t) => t.id !== id);
+    if (task) {
+      logActivity(`Admin deleted task "${task.title}"`);
+    }
   },
 
   async getUserPerformance(userId) {
     await delay(200);
-    const completedTasks = completedCount(userId);
     return {
-      completedTasks,
-      score: completedTasks * 10,
+      completedTasks: completedCount(userId),
+      score: calcScore(userId),
     };
   },
 
@@ -119,9 +118,12 @@ export const api = {
         score: calcScore(u.id),
       }))
       .sort((a, b) => b.score - a.score)
-      .map((u, index) => ({
-        ...u,
-        rank: index + 1,
-      }));
+      .map((u, i) => ({ ...u, rank: i + 1 }));
+  },
+
+  /* 🔥 DAY 19 */
+  async getActivityLogs() {
+    await delay(200);
+    return [...activities];
   },
 };

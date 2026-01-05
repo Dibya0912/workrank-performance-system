@@ -1,3 +1,4 @@
+// src/App.jsx
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import UserDashboard from "./pages/UserDashboard";
@@ -7,6 +8,7 @@ import MyPerformance from "./pages/MyPerformance";
 import MyRank from "./pages/MyRank";
 import UserTasks from "./pages/UserTasks";
 import AdminTasks from "./pages/AdminTasks";
+import AdminActivity from "./pages/AdminActivity"; // ✅ DAY 19
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -70,6 +72,16 @@ function App() {
         element={
           <ProtectedRoute role="admin">
             <Employees />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* 🔥 DAY 19 */}
+      <Route
+        path="/admin/activity"
+        element={
+          <ProtectedRoute role="admin">
+            <AdminActivity />
           </ProtectedRoute>
         }
       />

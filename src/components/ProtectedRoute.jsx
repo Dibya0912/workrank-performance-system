@@ -2,19 +2,19 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function ProtectedRoute({ role, children }) {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
-  // ⏳ Wait until auth restores
-  if (user === null) {
+  // ⏳ still checking localStorage
+  if (loading) {
     return <div className="p-8">Checking session...</div>;
   }
 
-  // ❌ Not logged in
+  // ❌ logged out
   if (!user) {
     return <Navigate to="/" replace />;
   }
 
-  // ❌ Wrong role
+  // ❌ wrong role
   if (role && user.role !== role) {
     return <Navigate to="/" replace />;
   }

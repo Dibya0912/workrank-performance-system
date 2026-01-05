@@ -1,57 +1,55 @@
-import { Link, useNavigate } from "react-router-dom";
+// src/components/Sidebar.jsx
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function Sidebar() {
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/");
-  };
-
-  if (!user) return null;
 
   return (
-    <aside className="w-64 min-h-screen p-6 text-white bg-gray-900">
-      <h2 className="mb-8 text-2xl font-bold">WorkRank</h2>
+    <aside className="w-64 min-h-screen p-4 text-white bg-slate-900">
+      <h1 className="mb-6 text-2xl font-bold">WorkRank</h1>
 
-      <nav className="space-y-4">
+      <nav className="space-y-2">
         {user.role === "user" && (
           <>
-            <Link className="block hover:text-blue-400" to="/user">
+            <NavLink to="/user" className="block p-2 rounded hover:bg-slate-700">
               Dashboard
-            </Link>
-            <Link className="block hover:text-blue-400" to="/user/tasks">
+            </NavLink>
+            <NavLink to="/user/tasks" className="block p-2 rounded hover:bg-slate-700">
               My Tasks
-            </Link>
-            <Link className="block hover:text-blue-400" to="/user/performance">
+            </NavLink>
+            <NavLink to="/user/performance" className="block p-2 rounded hover:bg-slate-700">
               My Performance
-            </Link>
-            <Link className="block hover:text-blue-400" to="/user/rank">
+            </NavLink>
+            <NavLink to="/user/rank" className="block p-2 rounded hover:bg-slate-700">
               My Rank
-            </Link>
+            </NavLink>
           </>
         )}
 
         {user.role === "admin" && (
           <>
-            <Link className="block hover:text-blue-400" to="/admin">
+            <NavLink to="/admin" className="block p-2 rounded hover:bg-slate-700">
               Dashboard
-            </Link>
-            <Link className="block hover:text-blue-400" to="/admin/tasks">
+            </NavLink>
+            <NavLink to="/admin/tasks" className="block p-2 rounded hover:bg-slate-700">
               Manage Tasks
-            </Link>
-            <Link className="block hover:text-blue-400" to="/admin/employees">
+            </NavLink>
+            <NavLink to="/admin/employees" className="block p-2 rounded hover:bg-slate-700">
               Employees
-            </Link>
+            </NavLink>
+
+            {/* 🔥 DAY 19 */}
+            <NavLink to="/admin/activity" className="block p-2 rounded hover:bg-slate-700">
+              Activity Logs
+            </NavLink>
           </>
         )}
       </nav>
 
       <button
-        onClick={handleLogout}
-        className="w-full py-2 mt-10 text-white bg-red-600 rounded"
+        onClick={logout}
+        className="w-full p-2 mt-10 text-white bg-red-600 rounded hover:bg-red-700"
       >
         Logout
       </button>
