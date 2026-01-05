@@ -325,6 +325,36 @@ production-ready system.
 
 
 
+## Day 19 – Activity Logs & Auth Session Fix
+
+### What was implemented
+- Added centralized **Activity Logs system** for admin
+- Logged all critical actions:
+  - Task creation
+  - Task status updates
+  - Task deletion
+- Created **Admin Activity Logs page** to view real-time system actions
+- Fixed critical **authentication session bug** causing infinite
+  "Checking session..." screen after logout
+- Introduced proper auth state handling using:
+  - `user`
+  - `loading` flag
+
+### Technical Highlights
+- In-memory activity log store with timestamped entries
+- Admin-only protected route for activity logs
+- Correct separation between:
+  - Session loading
+  - Logged-out state
+- Improved app behavior to match real-world authentication flow
+
+### Result
+- No infinite loading screens
+- Clean logout & redirect flow
+- Admin has full visibility of system activity
+- Application behavior now production-grade instead of demo-level
+
+
 
 
 
