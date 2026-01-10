@@ -7,7 +7,7 @@ const users = [
   { id: 3, name: "Anjali", role: "user" },
 ];
 
-/* ================= LOAD FROM STORAGE ================= */
+/* ================= STORAGE HELPERS ================= */
 const load = (key, fallback) => {
   const data = localStorage.getItem(key);
   return data ? JSON.parse(data) : fallback;
@@ -30,7 +30,7 @@ let tasks = load("workrank_tasks", [
   },
 ]);
 
-/* ================= ACTIVITY LOGS ================= */
+/* ================= ACTIVITIES (DAY 21) ================= */
 let activities = load("workrank_activities", []);
 
 /* ================= HELPERS ================= */
@@ -42,9 +42,11 @@ const completedCount = (userId) =>
 
 const calcScore = (userId) => completedCount(userId) * 10;
 
-const logActivity = (message) => {
+const logActivity = ({ type, message }) => {
   activities.unshift({
     id: Date.now(),
+    type, // CREATE_TASK | UPDATE_TASK | DELETE_TASK
+    actor: "Admin",
     message,
     time: new Date().toLocaleString(),
   });
@@ -72,20 +74,26 @@ export const api = {
     };
     tasks.push(newTask);
     save("workrank_tasks", tasks);
-    logActivity(`Admin created task "${task.title}"`);
+
+    logActivity({
+      type: "CREATE_TASK",
+      message: `Created task "${task.title}"`,
+    });
+
     return newTask;
   },
 
   async updateTaskStatus(id, status) {
     await delay(200);
-    tasks = tasks.map((t) =>
-      t.id === id ? { ...t, status } : t
-    );
-    save("workrank_tasks", tasks);
-
     const task = tasks.find((t) => t.id === id);
     if (task) {
-      logActivity(`Task "${task.title}" marked as ${status}`);
+      task.status = status;
+      save("workrank_tasks", tasks);
+
+      logActivity({
+        type: "UPDATE_TASK",
+        message: `Updated task "${task.title}" → ${status}`,
+      });
     }
   },
 
@@ -96,7 +104,10 @@ export const api = {
     save("workrank_tasks", tasks);
 
     if (task) {
-      logActivity(`Admin deleted task "${task.title}"`);
+      logActivity({
+        type: "DELETE_TASK",
+        message: `Deleted task "${task.title}"`,
+      });
     }
   },
 
@@ -138,8 +149,15 @@ export const api = {
       .map((u, i) => ({ ...u, rank: i + 1 }));
   },
 
+  /* ===== DAY 21 ===== */
   async getActivityLogs() {
     await delay(200);
     return [...activities];
+  },
+
+  async clearActivityLogs() {
+    await delay(200);
+    activities = [];
+    save("workrank_activities", []);
   },
 };
