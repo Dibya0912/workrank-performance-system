@@ -1,4 +1,3 @@
-
 🏆 WorkRank Performance System
 
 A role-based performance tracking and ranking dashboard built using
