@@ -10,9 +10,7 @@ export default function UserDashboard() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    if (user) {
-      api.getUserPerformance(user.id).then(setData);
-    }
+    if (user) api.getUserPerformance(user.id).then(setData);
   }, [user]);
 
   if (!data) return <div className="p-8">Loading...</div>;
@@ -25,8 +23,8 @@ export default function UserDashboard() {
 
         <div className="grid gap-6 md:grid-cols-3">
           <MetricCard title="Tasks Completed" value={data.completedTasks} />
+          <MetricCard title="Tasks Pending" value={data.pendingTasks} />
           <MetricCard title="Performance Score" value={`${data.score}%`} />
-          <MetricCard title="Rank" value="Live" />
         </div>
 
         <div className="mt-10">

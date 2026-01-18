@@ -19,7 +19,6 @@ export default function AdminDashboard() {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
-
       <main className="flex-1 p-8">
         <h1 className="mb-6 text-3xl font-bold">Admin Dashboard</h1>
 
@@ -33,13 +32,11 @@ export default function AdminDashboard() {
           <Charts admin />
         </div>
 
-        <h2 className="mt-10 mb-4 text-xl font-semibold">
-          All Employees
-        </h2>
+        <h2 className="mt-10 mb-4 text-xl font-semibold">Employees</h2>
 
         <div className="grid gap-4 md:grid-cols-3">
           {employees.map((emp) => (
-            <EmployeeCard key={emp.id} employee={emp} admin />
+            <EmployeeCard key={emp.id} employee={emp} />
           ))}
         </div>
       </main>

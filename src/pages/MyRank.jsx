@@ -11,31 +11,22 @@ export default function MyRank() {
     api.getLeaderboard().then(setLeaders);
   }, []);
 
-  if (!leaders.length) return <div className="p-8">Loading...</div>;
-
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
       <main className="flex-1 p-8">
         <h1 className="mb-6 text-3xl font-bold">Leaderboard</h1>
 
-        <ol className="max-w-lg space-y-3">
-          {leaders.map((u) => (
-            <li
-              key={u.id}
-              className={`flex justify-between p-3 rounded ${
-                u.id === user.id
-                  ? "bg-blue-100 font-bold"
-                  : "bg-white"
-              }`}
-            >
-              <span>
-                #{u.rank} {u.name}
-              </span>
-              <span>{u.score} pts</span>
-            </li>
-          ))}
-        </ol>
+        {leaders.map((u) => (
+          <div
+            key={u.id}
+            className={`p-3 rounded mb-2 ${
+              u.id === user.id ? "bg-blue-200 font-bold" : "bg-white"
+            }`}
+          >
+            #{u.rank} {u.name} – {u.score} pts
+          </div>
+        ))}
       </main>
     </div>
   );

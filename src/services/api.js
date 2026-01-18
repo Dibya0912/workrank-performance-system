@@ -2,9 +2,9 @@ const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 /* ================= USERS ================= */
 const users = [
-  { id: 1, name: "You", role: "user" },
-  { id: 2, name: "Rahul", role: "user" },
-  { id: 3, name: "Anjali", role: "user" },
+  { id: 1, name: "You", role: "user", department: "Frontend" },
+  { id: 2, name: "Rahul", role: "user", department: "Backend" },
+  { id: 3, name: "Anjali", role: "user", department: "UI/UX" },
 ];
 
 /* ================= STORAGE HELPERS ================= */
@@ -30,7 +30,7 @@ let tasks = load("workrank_tasks", [
   },
 ]);
 
-/* ================= ACTIVITIES (DAY 21) ================= */
+/* ================= ACTIVITIES ================= */
 let activities = load("workrank_activities", []);
 
 /* ================= HELPERS ================= */
@@ -40,12 +40,15 @@ const userTasks = (userId) =>
 const completedCount = (userId) =>
   userTasks(userId).filter((t) => t.status === "done").length;
 
+const pendingCount = (userId) =>
+  userTasks(userId).filter((t) => t.status === "pending").length;
+
 const calcScore = (userId) => completedCount(userId) * 10;
 
 const logActivity = ({ type, message }) => {
   activities.unshift({
     id: Date.now(),
-    type, // CREATE_TASK | UPDATE_TASK | DELETE_TASK
+    type,
     actor: "Admin",
     message,
     time: new Date().toLocaleString(),
@@ -67,11 +70,7 @@ export const api = {
 
   async createTask(task) {
     await delay(200);
-    const newTask = {
-      ...task,
-      id: Date.now(),
-      status: "pending",
-    };
+    const newTask = { ...task, id: Date.now(), status: "pending" };
     tasks.push(newTask);
     save("workrank_tasks", tasks);
 
@@ -85,14 +84,16 @@ export const api = {
 
   async updateTaskStatus(id, status) {
     await delay(200);
+    tasks = tasks.map((t) =>
+      t.id === id ? { ...t, status } : t
+    );
+    save("workrank_tasks", tasks);
+
     const task = tasks.find((t) => t.id === id);
     if (task) {
-      task.status = status;
-      save("workrank_tasks", tasks);
-
       logActivity({
         type: "UPDATE_TASK",
-        message: `Updated task "${task.title}" → ${status}`,
+        message: `Updated "${task.title}" → ${status}`,
       });
     }
   },
@@ -106,7 +107,7 @@ export const api = {
     if (task) {
       logActivity({
         type: "DELETE_TASK",
-        message: `Deleted task "${task.title}"`,
+        message: `Deleted "${task.title}"`,
       });
     }
   },
@@ -115,17 +116,25 @@ export const api = {
     await delay(200);
     return {
       completedTasks: completedCount(userId),
+      pendingTasks: pendingCount(userId),
       score: calcScore(userId),
     };
   },
 
   async getEmployees() {
     await delay(200);
-    return users.map((u) => ({
-      ...u,
-      tasksCompleted: completedCount(u.id),
-      performance: calcScore(u.id),
-    }));
+
+    const leaderboard = users
+      .map((u) => ({
+        ...u,
+        tasksCompleted: completedCount(u.id),
+        tasksPending: pendingCount(u.id),
+        performance: calcScore(u.id),
+      }))
+      .sort((a, b) => b.performance - a.performance)
+      .map((u, i) => ({ ...u, rank: i + 1 }));
+
+    return leaderboard;
   },
 
   async getAdminMetrics() {
@@ -139,6 +148,7 @@ export const api = {
 
   async getLeaderboard() {
     await delay(200);
+
     return users
       .map((u) => ({
         id: u.id,
@@ -149,7 +159,6 @@ export const api = {
       .map((u, i) => ({ ...u, rank: i + 1 }));
   },
 
-  /* ===== DAY 21 ===== */
   async getActivityLogs() {
     await delay(200);
     return [...activities];
