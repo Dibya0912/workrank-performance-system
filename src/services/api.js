@@ -9,12 +9,20 @@ const users = [
 
 /* ================= STORAGE HELPERS ================= */
 const load = (key, fallback) => {
-  const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : fallback;
+  try {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : fallback;
+  } catch {
+    return fallback;
+  }
 };
 
 const save = (key, value) => {
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // Keep the in-memory demo usable when browser storage is unavailable.
+  }
 };
 
 /* ================= TASKS ================= */
